@@ -3,32 +3,44 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Smart Library</title>
+  <title>Smart Library — Demo</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header>
-    <h1>Smart Library</h1>
-  </header>
+  <div class="app">
+    <header class="hero">
+      <div class="hero-inner">
+        <h1 class="title">Smart Library</h1>
+        <p class="subtitle">Fast. Simple. Smart — manage books and track issues.</p>
 
-  <main>
-    <section class="controls">
-      <form id="book-form">
-        <input id="title" type="text" placeholder="Book title" required />
-        <input id="author" type="text" placeholder="Author" required />
-        <input id="category" type="text" placeholder="Category (optional)" />
-        <button type="submit">Add Book</button>
-      </form>
+        <div class="search-row">
+          <input id="search" type="search" placeholder="Search by title or author..." aria-label="Search books">
+        </div>
+      </div>
+    </header>
 
-      <input id="search" type="text" placeholder="Search by title or author..." />
-    </section>
+    <main class="container">
+      <section class="panel">
+        <form id="book-form" class="form-inline" aria-label="Add book form">
+          <input id="title" type="text" placeholder="Book title" required />
+          <input id="author" type="text" placeholder="Author" required />
+          <input id="category" type="text" placeholder="Category (optional)" />
+          <button type="submit" class="primary">Add Book</button>
+        </form>
+      </section>
 
-    <section id="books" class="books"></section>
-  </main>
+      <section id="books" class="books" aria-live="polite"></section>
 
-  <footer>
-    <small>Built with ❤️ — Smart Library (Frontend demo)</small>
-  </footer>
+      <footer class="footer">Built with ❤️ — Smart Library (Frontend demo)</footer>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
 
   <script src="script.js"></script>
 </body>
