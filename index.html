@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Smart Library</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Smart Library</h1>
+  </header>
+
+  <main>
+    <section class="controls">
+      <form id="book-form">
+        <input id="title" type="text" placeholder="Book title" required />
+        <input id="author" type="text" placeholder="Author" required />
+        <input id="category" type="text" placeholder="Category (optional)" />
+        <button type="submit">Add Book</button>
+      </form>
+
+      <input id="search" type="text" placeholder="Search by title or author..." />
+    </section>
+
+    <section id="books" class="books"></section>
+  </main>
+
+  <footer>
+    <small>Built with ❤️ — Smart Library (Frontend demo)</small>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
