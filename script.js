@@ -1,89 +1,51 @@
-const STORAGE_KEY = 'smartLibraryBooks';
-let books = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+/* Reset + base */
+*{box-sizing:border-box}
+html,body,#root{height:100%}
+body{margin:0;font-family:Inter,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial;color:#0f172a;background:linear-gradient(180deg,#f8fafc 0%, #eef2f7 100%);-webkit-font-smoothing:antialiased}
 
-const bookForm = document.getElementById('book-form');
-const booksContainer = document.getElementById('books');
-const searchInput = document.getElementById('search');
+.app{min-height:100vh;display:flex;flex-direction:column}
 
-function saveBooks(){
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(books));
+/* HERO */
+.hero{background:linear-gradient(135deg,#2563eb 0%, #7c3aed 100%);color:white;padding:44px 20px;border-bottom-left-radius:18px;border-bottom-right-radius:18px}
+.hero-inner{max-width:1100px;margin:0 auto;text-align:center}
+.title{font-size:28px;margin:0 0 6px;font-weight:700;letter-spacing:-0.5px}
+.subtitle{margin:0 0 18px;opacity:0.95}
+.search-row{max-width:720px;margin:0 auto}
+.search-row input{width:100%;padding:12px 14px;border-radius:10px;border:none;outline:none;font-size:14px}
+
+/* CONTAINER */
+.container{max-width:1100px;margin:22px auto;padding:0 16px;flex:1}
+.panel{background:linear-gradient(180deg,#ffffff 0%, #fbfdff 100%);padding:12px;border-radius:12px;box-shadow:0 6px 18px rgba(15,23,42,0.06);margin-bottom:16px}
+.form-inline{display:flex;gap:10px;flex-wrap:wrap}
+.form-inline input{flex:1;min-width:160px;padding:10px 12px;border-radius:8px;border:1px solid #e6eef9;background:#fff}
+.primary{background:#2563eb;color:white;border:none;padding:10px 14px;border-radius:8px;cursor:pointer}
+.primary:active{transform:translateY(1px)}
+
+/* BOOK GRID */
+.books{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-top:12px}
+.card{background:white;border-radius:12px;padding:14px;border:1px solid rgba(15,23,42,0.04);display:flex;flex-direction:column;gap:8px;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+.card:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(2,6,23,0.08);border-color:rgba(124,58,237,0.12)}
+.card .meta{color:#475569;font-size:13px}
+.card strong{font-size:15px}
+.actions{display:flex;gap:8px;margin-top:auto}
+.btn{padding:8px 10px;border-radius:8px;border:none;cursor:pointer;font-weight:600}
+.btn.issue{background:#10b981;color:white}
+.btn.return{background:#f97316;color:white}
+.btn.delete{background:#ef4444;color:white}
+
+/* small status pill */
+.pill{display:inline-block;padding:6px 8px;border-radius:999px;font-size:12px}
+.pill.available{background:rgba(16,185,129,0.12);color:#065f46}
+.pill.issued{background:rgba(249,115,22,0.12);color:#7c2d12}
+
+.footer{text-align:center;color:#64748b;padding:18px 6px}
+
+/* responsive tweaks */
+@media (max-width:640px){
+  .title{font-size:22px}
+  .form-inline{flex-direction:column}
+  .form-inline input{width:100%}
 }
-
-function renderBooks(filter = ''){
-  const q = filter.trim().toLowerCase();
-  const list = books.filter(b => {
-    if(!q) return true;
-    return b.title.toLowerCase().includes(q) || b.author.toLowerCase().includes(q);
-  });
-
-  if(list.length === 0){
-    booksContainer.innerHTML = '<p style="grid-column:1/-1;opacity:0.8">No books added yet.</p>';
-    return;
-  }
-
-  booksContainer.innerHTML = list.map(b => `
-    <div class="card" data-id="${b.id}">
-      <div>
-        <strong>${escapeHtml(b.title)}</strong>
-        <div class="meta">${escapeHtml(b.author)} • ${escapeHtml(b.category || 'General')}</div>
-      </div>
-      <div class="meta">Status: ${b.issued ? `<em>Issued to</em> ${escapeHtml(b.borrower || '-')}` : '<em>Available</em>'}</div>
-      <div class="actions">
-        <button class="btn ${b.issued ? 'return' : 'issue'}">${b.issued ? 'Return' : 'Issue'}</button>
-        <button class="btn delete">Delete</button>
-      </div>
-    </div>
-  `).join('');
-}
-
-function escapeHtml(str){
-  if(!str) return '';
-  return str.replace(/[&<>"]/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[s]));
-}
-
-bookForm.addEventListener('submit', e => {
-  e.preventDefault();
-  const title = document.getElementById('title').value.trim();
-  const author = document.getElementById('author').value.trim();
-  const category = document.getElementById('category').value.trim();
-  if(!title || !author) return alert('Please enter title and author');
-  const book = { id: Date.now().toString(), title, author, category, issued:false, borrower:null };
-  books.unshift(book);
-  saveBooks();
-  renderBooks(searchInput.value);
-  bookForm.reset();
-});
-
-booksContainer.addEventListener('click', e => {
-  const card = e.target.closest('.card');
-  if(!card) return;
-  const id = card.dataset.id;
-  const book = books.find(b => b.id === id);
-  if(e.target.classList.contains('delete')){
-    if(confirm('Delete this book?')){
-      books = books.filter(b => b.id !== id);
-      saveBooks();
-      renderBooks(searchInput.value);
-    }
-  } else if(e.target.classList.contains('issue')){
-    const borrower = prompt('Enter borrower name:');
-    if(borrower){
-      book.issued = true;
-      book.borrower = borrower;
-      book.issuedDate = new Date().toISOString();
-      saveBooks();
-      renderBooks(searchInput.value);
-    }
-  } else if(e.target.classList.contains('return')){
-    if(confirm('Mark as returned?')){
-      book.issued = false;
-      book.borrower = null;
-      book.issuedDate = null;
-      saveBooks();
-      renderBooks(searchInput.value);
-    }
-  }
-});
 
 searchInput.addEventListener('input', e => renderBooks(e.target.value));
 
