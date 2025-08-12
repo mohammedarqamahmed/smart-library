@@ -4,6 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Smart Library</title>
+
+  <!-- Font -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -11,34 +13,42 @@
   <div class="app">
     <header class="hero">
       <div class="hero-inner">
-        <div class="left">
-          <h1 class="title">Smart Library</h1>
-          <p class="subtitle"> search, filters, ratings, favorites & more.</p>
-        </div>
+        <div class="hero-top">
+          <div>
+            <h1 class="title">Smart Library</h1>
+            <p class="subtitle">Search, filters, ratings, favorites, PDF viewer & multi-user demo.</p>
+          </div>
 
-        <div class="right-top">
-          <div class="counts">Showing <b id="visible-count">0</b> / <b id="total-count">0</b></div>
-          <button id="theme-toggle" class="theme-btn" aria-label="toggle theme">🌗</button>
+          <div class="hero-actions">
+            <div class="counts">Showing <b id="visible-count">0</b> / <b id="total-count">0</b></div>
+            <button id="login-btn" class="btn small">Login</button>
+            <span id="current-user" class="muted"></span>
+            <button id="theme-toggle" class="btn small" aria-label="Toggle theme">🌗</button>
+          </div>
         </div>
 
         <div class="search-row">
           <input id="search" type="search" placeholder="Search by title or author..." autocomplete="off" />
-          <select id="category-filter" aria-label="category">
+          <select id="category-filter" aria-label="Filter by category">
             <option value="">All categories</option>
           </select>
         </div>
 
         <div id="suggestions" class="suggestions" hidden></div>
-        <div id="category-chips" class="chips-row"></div>
+
+        <div class="chips-row" id="category-chips" aria-hidden="false"></div>
       </div>
     </header>
 
     <main class="container">
       <section class="panel form-panel">
-        <form id="book-form" class="form-inline">
+        <form id="book-form" class="form-inline" autocomplete="off">
           <input id="title" type="text" placeholder="Title" required />
           <input id="author" type="text" placeholder="Author" required />
-          <input id="category" type="text" placeholder="Category (e.g., Programming)" />
+          <select id="category">
+            <option value="">Category (choose)</option>
+            <option>Programming</option><option>Fiction</option><option>Science</option><option>Comics</option><option>History</option><option>Self-Help</option><option>Non-fiction</option>
+          </select>
           <input id="image" type="url" placeholder="Image URL (optional)" />
           <input id="pdf" type="url" placeholder="PDF URL (optional)" />
           <input id="description" type="text" placeholder="Short description (optional)" />
@@ -47,17 +57,17 @@
       </section>
 
       <section class="panel view-controls">
-        <label><input type="checkbox" id="show-favorites-only" /> Favorites only</label>
-        <label style="margin-left:16px"><input type="checkbox" id="show-issued-only" /> Issued only</label>
+        <label><input id="show-favorites-only" type="checkbox" /> Favorites only</label>
+        <label style="margin-left:16px"><input id="show-issued-only" type="checkbox" /> Issued only</label>
       </section>
 
       <section id="books" class="books" aria-live="polite"></section>
 
-      <footer class="footer">Built with ❤️ — Smart Library</footer>
+      <footer class="footer">💡 Built with ❤️ — Where Stories Meet Innovation</footer>
     </main>
   </div>
 
-  <!-- PDF modal -->
+  <!-- PDF viewer modal -->
   <div id="pdf-modal" class="modal" hidden>
     <div class="modal-inner">
       <button id="pdf-close" class="modal-close">Close</button>
@@ -65,7 +75,21 @@
     </div>
   </div>
 
-  <!-- template -->
+  <!-- Login modal -->
+  <div id="login-modal" class="modal" hidden>
+    <div class="modal-inner small-modal">
+      <button id="login-close" class="modal-close">✕</button>
+      <h3>Login / Register</h3>
+      <form id="login-form" class="login-form">
+        <input id="username" placeholder="Username (no spaces)" required />
+        <button type="submit" class="primary">Login / Register</button>
+      </form>
+      <p class="muted">Personalized libraries for every local user.
+.</p>
+    </div>
+  </div>
+
+  <!-- Card template -->
   <template id="card-template">
     <article class="card">
       <img class="thumb" alt="cover" />
