@@ -11,34 +11,25 @@
   <div class="app">
     <header class="hero">
       <div class="hero-inner">
-        <div class="hero-row">
-          <div class="left">
-            <h1 class="title">Smart Library</h1>
-            <p class="subtitle">books, search, filters, ratings, favorites & more.</p>
-          </div>
+        <div class="left">
+          <h1 class="title">Smart Library</h1>
+          <p class="subtitle"> search, filters, ratings, favorites & more.</p>
+        </div>
 
-          <div class="right-controls">
-            <div class="user-box">
-              <button id="login-btn" class="small">Login</button>
-              <span id="current-user" class="muted"></span>
-            </div>
-
-            <div class="count">Showing <b id="visible-count">0</b> / <b id="total-count">0</b></div>
-
-            <button id="theme-toggle" class="theme-btn" aria-label="Toggle theme">🌗</button>
-          </div>
+        <div class="right-top">
+          <div class="counts">Showing <b id="visible-count">0</b> / <b id="total-count">0</b></div>
+          <button id="theme-toggle" class="theme-btn" aria-label="toggle theme">🌗</button>
         </div>
 
         <div class="search-row">
           <input id="search" type="search" placeholder="Search by title or author..." autocomplete="off" />
-          <select id="category-filter" aria-label="Category filter">
+          <select id="category-filter" aria-label="category">
             <option value="">All categories</option>
           </select>
         </div>
 
         <div id="suggestions" class="suggestions" hidden></div>
-
-        <div class="chips-row" id="category-chips"></div>
+        <div id="category-chips" class="chips-row"></div>
       </div>
     </header>
 
@@ -47,10 +38,7 @@
         <form id="book-form" class="form-inline">
           <input id="title" type="text" placeholder="Title" required />
           <input id="author" type="text" placeholder="Author" required />
-          <select id="category" >
-            <option value="">Category (choose)</option>
-            <option>Programming</option><option>Fiction</option><option>Science</option><option>Comics</option><option>History</option><option>Self-Help</option>
-          </select>
+          <input id="category" type="text" placeholder="Category (e.g., Programming)" />
           <input id="image" type="url" placeholder="Image URL (optional)" />
           <input id="pdf" type="url" placeholder="PDF URL (optional)" />
           <input id="description" type="text" placeholder="Short description (optional)" />
@@ -59,8 +47,8 @@
       </section>
 
       <section class="panel view-controls">
-        <label><input type="checkbox" id="show-favorites-only" /> Show favorites only</label>
-        <label style="margin-left:16px;"><input type="checkbox" id="show-issued-only" /> Show issued only</label>
+        <label><input type="checkbox" id="show-favorites-only" /> Favorites only</label>
+        <label style="margin-left:16px"><input type="checkbox" id="show-issued-only" /> Issued only</label>
       </section>
 
       <section id="books" class="books" aria-live="polite"></section>
@@ -77,19 +65,7 @@
     </div>
   </div>
 
-  <!-- Login modal -->
-  <div id="login-modal" class="modal" hidden>
-    <div class="modal-inner small-modal">
-      <button id="login-close" class="modal-close">✕</button>
-      <h3>Login / Register</h3>
-      <form id="login-form" class="login-form">
-        <input id="username" placeholder="Username (no spaces)" required />
-        <button type="submit" class="primary">Login / Register</button>
-      </form>
-      <p class="muted">Users stored locally. Each user has their own library in localStorage.</p>
-    </div>
-  </div>
-
+  <!-- template -->
   <template id="card-template">
     <article class="card">
       <img class="thumb" alt="cover" />
